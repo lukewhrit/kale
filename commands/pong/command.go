@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package ping
+package pong
 
 import (
 	"time"
@@ -12,10 +12,10 @@ import (
 	"github.com/Lukaesebrot/dgc"
 )
 
-var pingCmd = &dgc.Command{
-	Name:        "ping",
-	Description: "Pong",
-	Usage:       "ping",
+var pongCmd = &dgc.Command{
+	Name:        "pong",
+	Description: "Ping",
+	Usage:       "pong",
 	Flags:       []string{},
 	IgnoreCase:  true,
 	SubCommands: []*dgc.Command{},
@@ -23,11 +23,11 @@ var pingCmd = &dgc.Command{
 		ctx.RespondText("You are being rate limited!")
 	}),
 	Handler: func(ctx *dgc.Ctx) {
-		ctx.RespondText("Pong!")
+		ctx.RespondText("Ping!")
 	},
 }
 
 // Register registers the Ping command with dgc
 func Register(r *dgc.Router) {
-	r.RegisterCmd(pingCmd)
+	r.RegisterCmd(pongCmd)
 }

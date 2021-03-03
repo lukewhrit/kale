@@ -9,8 +9,10 @@ package app
 import (
 	"github.com/Lukaesebrot/dgc"
 	"github.com/lukewhrit/kale/commands/ping"
+	"github.com/lukewhrit/kale/commands/pong"
 )
 
 func loadAllCommands(r *dgc.Router) {
 	ping.Register(r)
+	pong.Register(r)
 }

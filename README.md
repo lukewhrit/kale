@@ -8,9 +8,10 @@ Kale features:
  * mod mail,
  * reaction roles,
  * reminders,
+ * automatic URL safety checking,
  * a starboard feature,
  * support for member count channels,
- * and way more.
+ * and much more.
 
 ## Table of Contents
 
