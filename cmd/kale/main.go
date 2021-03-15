@@ -9,10 +9,17 @@ package main
 import (
 	"log"
 
+	"github.com/joho/godotenv"
 	"github.com/lukewhrit/kale/internal/app"
 )
 
 func init() {
+	// Load values in dotenv file to environment
+	if err := godotenv.Load(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Load environment variables into a golang struct
 	if err := app.LoadConfig(); err != nil {
 		log.Fatal(err)
 	}
