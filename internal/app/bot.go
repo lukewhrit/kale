@@ -12,8 +12,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Lukaesebrot/dgc"
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/commands"
+	"github.com/zekroTJA/shireikan"
 )
 
 // Start begins the program and connects to Discord
@@ -27,7 +28,8 @@ func Start() error {
 
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
 
-	// Open websocket connection to Discord and begin listening
+	dg.AddHandler(onReady)
+
 	if err = dg.Open(); err != nil {
 		return err
 	}
@@ -42,21 +44,30 @@ func Start() error {
 		dg.Close()
 	}()
 
-	log.Println("Bot is now running. Press CTRL-C to exit.")
-
-	router := dgc.Create(&dgc.Router{
-		Prefixes:    []string{"-"},
-		BotsAllowed: false,
-		Commands:    []*dgc.Command{},
-		Middlewares: []dgc.Middleware{},
-		PingHandler: func(ctx *dgc.Ctx) {
-			ctx.RespondText("Pong!")
+	handler := shireikan.NewHandler(&shireikan.Config{
+		GeneralPrefix:         "-",
+		AllowBots:             false,
+		AllowDM:               true,
+		ExecuteOnEdit:         false,
+		InvokeToLower:         true,
+		UseDefaultHelpCommand: true,
+		OnError: func(ctx shireikan.Context, typ shireikan.ErrorType, err error) {
+			log.Fatalf("[ERR] [%d] %s", typ, err.Error())
 		},
 	})
 
-	router.RegisterDefaultHelpCommand(dg, nil)
-	loadAllCommands(router)
-	router.Initialize(dg)
+	handler.RegisterCommand(&commands.Ping{})
+	handler.RegisterCommand(&commands.Pong{})
+
+	handler.RegisterHandlers(dg)
 
 	return nil
+}
+
+func onReady(s *discordgo.Session, event *discordgo.Ready) {
+	log.Println("Bot is now running. Press Ctrl-C to exit.")
+
+	if err := s.UpdateGameStatus(0, "-help"); err != nil {
+		log.Fatalf("[ERR] %s", err.Error())
+	}
 }
