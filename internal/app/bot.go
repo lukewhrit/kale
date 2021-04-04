@@ -13,7 +13,7 @@ import (
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/lukewhrit/kale/commands"
+	"github.com/lukewhrit/kale/commands/general"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -56,8 +56,8 @@ func Start() error {
 		},
 	})
 
-	handler.RegisterCommand(&commands.Ping{})
-	handler.RegisterCommand(&commands.Pong{})
+	// Register Commands from General Group
+	handler.RegisterCommand(&general.Ping{})
 
 	handler.RegisterHandlers(dg)
 
