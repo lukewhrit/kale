@@ -21,12 +21,12 @@ func (c *Ping) GetInvokes() []string {
 
 // GetDescription returns the commands description.
 func (c *Ping) GetDescription() string {
-	return "test Kale's connection to Discord by sending a ping."
+	return "test kale's connection to Discord by sending a ping."
 }
 
 // GetHelp returns the commands help text.
 func (c *Ping) GetHelp() string {
-	return "`ping` - send a ping"
+	return "`-ping`"
 }
 
 // GetGroup returns the commands group.

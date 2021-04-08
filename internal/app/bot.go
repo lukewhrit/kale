@@ -37,7 +37,7 @@ func Start() error {
 	// Wait here until CTRL-C or another term is signal is received
 	defer func() {
 		sc := make(chan os.Signal, 1)
-		signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+		signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 		<-sc
 
 		// Cleanly close the Discord session
@@ -50,7 +50,7 @@ func Start() error {
 		AllowDM:               true,
 		ExecuteOnEdit:         false,
 		InvokeToLower:         true,
-		UseDefaultHelpCommand: true,
+		UseDefaultHelpCommand: false,
 		OnError: func(ctx shireikan.Context, typ shireikan.ErrorType, err error) {
 			log.Fatalf("[ERR] [%d] %s", typ, err.Error())
 		},
@@ -58,6 +58,7 @@ func Start() error {
 
 	// Register Commands from General Group
 	handler.RegisterCommand(&general.Ping{})
+	handler.RegisterCommand(&general.Help{})
 
 	handler.RegisterHandlers(dg)
 

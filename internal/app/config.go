@@ -7,7 +7,7 @@
 package app
 
 import (
-	"github.com/caarlos0/env"
+	"github.com/caarlos0/env/v6"
 )
 
 // Config represents a Kale bot configuration object
