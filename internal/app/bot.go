@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/commands/fun"
 	"github.com/lukewhrit/kale/commands/general"
 	"github.com/zekroTJA/shireikan"
 )
@@ -34,7 +35,7 @@ func Start() error {
 		return err
 	}
 
-	// Wait here until CTRL-C or another term is signal is received
+	// Wait here until CTRL-C or another term signal is received
 	defer func() {
 		sc := make(chan os.Signal, 1)
 		signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
@@ -52,13 +53,34 @@ func Start() error {
 		InvokeToLower:         true,
 		UseDefaultHelpCommand: false,
 		OnError: func(ctx shireikan.Context, typ shireikan.ErrorType, err error) {
-			log.Fatalf("[ERR] [%d] %s", typ, err.Error())
+			// Write the error to the log
+			log.Printf("[ERR] [%d] %s", typ, err.Error())
+
+			// Send an embed to the channel where the error ocurred
+			embed := &discordgo.MessageEmbed{
+				Color:       0x1dd1a1,
+				Title:       "An error occurred while executing this command.",
+				Description: "```" + err.Error() + "```",
+			}
+
+			_, msgError := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)
+
+			if msgError != nil {
+				log.Printf("[ERR] [%d] %s", typ, msgError.Error())
+			}
 		},
 	})
 
 	// Register Commands from General Group
 	handler.RegisterCommand(&general.Ping{})
 	handler.RegisterCommand(&general.Help{})
+
+	// Register commands from Fun group
+	handler.RegisterCommand(&fun.Bird{})
+	handler.RegisterCommand(&fun.Bunny{})
+	handler.RegisterCommand(&fun.Cat{})
+	handler.RegisterCommand(&fun.Dog{})
+	handler.RegisterCommand(&fun.Duck{})
 
 	handler.RegisterHandlers(dg)
 
