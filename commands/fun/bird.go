@@ -85,6 +85,7 @@ func (c *Bird) Exec(ctx shireikan.Context) error {
 		Image: &discordgo.MessageEmbedImage{
 			URL: bird.Link,
 		},
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	_, err = ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)

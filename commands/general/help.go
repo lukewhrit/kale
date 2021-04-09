@@ -9,6 +9,7 @@ package general
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekroTJA/shireikan"
@@ -58,8 +59,9 @@ func (c *Help) IsExecutableInDMChannels() bool {
 // Exec is the commands execution handler.
 func (c *Help) Exec(ctx shireikan.Context) error {
 	emb := &discordgo.MessageEmbed{
-		Color:  0x1dd1a1,
-		Fields: make([]*discordgo.MessageEmbedField, 0),
+		Color:     0x1dd1a1,
+		Fields:    make([]*discordgo.MessageEmbedField, 0),
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	handler, _ := ctx.GetObject("cmdhandler").(shireikan.Handler)

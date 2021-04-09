@@ -92,6 +92,7 @@ func (c *Duck) Exec(ctx shireikan.Context) error {
 		Image: &discordgo.MessageEmbedImage{
 			URL: duck.URL,
 		},
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	_, err = ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)

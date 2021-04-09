@@ -70,6 +70,7 @@ func (c *Uptime) Exec(ctx shireikan.Context) error {
 		Title: "⌚ Kale Uptime",
 		Description: "Kale has been online for `" +
 			uptime.Truncate(time.Second).String() + "`.",
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	_, err := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)

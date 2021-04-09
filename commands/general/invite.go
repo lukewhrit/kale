@@ -8,6 +8,7 @@ package general
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekroTJA/shireikan"
@@ -64,6 +65,7 @@ func (c *Invite) Exec(ctx shireikan.Context) error {
 		Description: fmt.Sprintf(
 			"Want Kale in your server? [Just click this to invite me](%s).",
 			inviteLink),
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	_, err := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)

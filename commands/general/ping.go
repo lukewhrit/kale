@@ -57,9 +57,10 @@ func (c *Ping) IsExecutableInDMChannels() bool {
 // Exec is the commands execution handler.
 func (c *Ping) Exec(ctx shireikan.Context) error {
 	embed := &discordgo.MessageEmbed{
-		Color:  0x1dd1a1,
-		Fields: make([]*discordgo.MessageEmbedField, 0),
-		Title:  "🏓 Pinging...",
+		Color:     0x1dd1a1,
+		Fields:    make([]*discordgo.MessageEmbedField, 0),
+		Title:     "🏓 Pinging...",
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	message, err := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)
