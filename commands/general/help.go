@@ -4,9 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-// Create a custom help command to replace built-in help command to provide more
-// features
-
 package general
 
 import (
@@ -24,7 +21,7 @@ type Help struct {
 
 // GetInvokes returns the command invokes.
 func (c *Help) GetInvokes() []string {
-	return []string{"help", "h", "?", "man", "info", "commands"}
+	return []string{"help", "h", "?", "man", "info", "commands", "information"}
 }
 
 // GetDescription returns the commands description.

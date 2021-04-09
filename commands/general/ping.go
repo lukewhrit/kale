@@ -7,6 +7,9 @@
 package general
 
 import (
+	"time"
+
+	"github.com/bwmarrin/discordgo"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -53,7 +56,38 @@ func (c *Ping) IsExecutableInDMChannels() bool {
 
 // Exec is the commands execution handler.
 func (c *Ping) Exec(ctx shireikan.Context) error {
-	_, err := ctx.Reply("Ping! :ping_pong:")
+	embed := &discordgo.MessageEmbed{
+		Color:  0x1dd1a1,
+		Fields: make([]*discordgo.MessageEmbedField, 0),
+		Title:  "🏓 Pinging...",
+	}
+
+	message, err := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)
+
+	if err != nil {
+		return err
+	}
+
+	timestamp, err := message.Timestamp.Parse()
+
+	if err != nil {
+		return err
+	}
+
+	embed.Title = "🏓 Pong!"
+	embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
+		Name:   "Message Latency",
+		Value:  "`" + time.Since(timestamp).Truncate(time.Millisecond).String() + "`",
+		Inline: true,
+	})
+
+	embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
+		Name:   "Heartbeat Latency",
+		Value:  "`" + ctx.GetSession().HeartbeatLatency().Truncate(time.Millisecond).String() + "`",
+		Inline: true,
+	})
+
+	_, err = ctx.GetSession().ChannelMessageEditEmbed(ctx.GetChannel().ID, message.ID, embed)
 
 	return err
 }

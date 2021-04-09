@@ -7,6 +7,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -59,8 +60,8 @@ func Start() error {
 			// Send an embed to the channel where the error ocurred
 			embed := &discordgo.MessageEmbed{
 				Color:       0x1dd1a1,
-				Title:       "An error occurred while executing this command.",
-				Description: "```" + err.Error() + "```",
+				Title:       "🛑 An error occurred while executing this command.",
+				Description: fmt.Sprintf("```%s```\n You can report this error and get support for it on [Github](https://github.com/lukewhrit/kale/issues).", err.Error()),
 			}
 
 			_, msgError := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)
@@ -74,6 +75,9 @@ func Start() error {
 	// Register Commands from General Group
 	handler.RegisterCommand(&general.Ping{})
 	handler.RegisterCommand(&general.Help{})
+	handler.RegisterCommand(&general.Invite{})
+	handler.RegisterCommand(&general.Stats{})
+	handler.RegisterCommand(&general.Uptime{})
 
 	// Register commands from Fun group
 	handler.RegisterCommand(&fun.Bird{})
