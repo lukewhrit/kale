@@ -12,7 +12,10 @@ import (
 
 // Config represents a Kale bot configuration object
 var Config struct {
-	Token string `env:"KALE_TOKEN"`
+	Token       string `env:"KALE_TOKEN"`
+	Prefix      string `env:"KALE_PREFIX"`
+	DatabaseURI string `env:"KALE_DATABASE_URI"`
+	BotOwner    string `env:"KALE_BOT_OWNER"`
 }
 
 // LoadConfig loads the bots configuration from environment variables

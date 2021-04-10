@@ -48,7 +48,7 @@ func Start() error {
 	}()
 
 	handler := shireikan.NewHandler(&shireikan.Config{
-		GeneralPrefix:         "-",
+		GeneralPrefix:         Config.Prefix,
 		AllowBots:             false,
 		AllowDM:               true,
 		ExecuteOnEdit:         false,
@@ -71,6 +71,9 @@ func Start() error {
 			if msgError != nil {
 				log.Printf("[ERR] [%d] %s", typ, msgError.Error())
 			}
+		},
+		GuildPrefixGetter: func(guildID string) (string, error) {
+			return "!", nil
 		},
 	})
 
