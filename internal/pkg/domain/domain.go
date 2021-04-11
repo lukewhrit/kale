@@ -6,6 +6,12 @@
 
 package domain
 
+import (
+	"fmt"
+	"io/ioutil"
+	"strings"
+)
+
 const (
 	// EmbedColor holds the global color of embeds
 	EmbedColor = 0x1dd1a1
@@ -15,4 +21,35 @@ const (
 // indicate code blocks in Discord.
 func CodeifyString(value string) string {
 	return "`" + value + "`"
+}
+
+// IntToString converts provided base-10 integers into strings use fmt.Sprintf
+// method
+func IntToString(value int) string {
+	return fmt.Sprintf("%d", value)
+}
+
+// BytesToMegabytes performs a basic math operation to convert byte values in
+// megabytes
+func BytesToMegabytes(bytes uint64) uint64 {
+	return bytes / 1024 / 1024
+}
+
+func ParseVersionFile() ([]string, error) {
+	versionFile, err := ioutil.ReadFile("./version.txt")
+
+	if err != nil {
+		return nil, err
+	}
+
+	versionText := string(versionFile)
+	versionArray := strings.Split(versionText, ".")
+
+	return versionArray, nil
+}
+
+func VersionString() (string, error) {
+	version, err := ParseVersionFile()
+
+	return strings.Join(version, "."), err
 }

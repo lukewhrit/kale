@@ -16,6 +16,7 @@ var Config struct {
 	Prefix      string `env:"KALE_PREFIX"`
 	DatabaseURI string `env:"KALE_DATABASE_URI"`
 	BotOwner    string `env:"KALE_BOT_OWNER"`
+	ClientID    string `env:"KALE_CLIENT_ID"`
 }
 
 // LoadConfig loads the bots configuration from environment variables
