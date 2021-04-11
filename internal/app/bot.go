@@ -29,7 +29,7 @@ func Start() error {
 		return err
 	}
 
-	dg.Identify.Intents = discordgo.IntentsGuildMessages
+	dg.Identify.Intents = discordgo.IntentsAllWithoutPrivileged | discordgo.IntentsGuildMembers
 
 	dg.AddHandler(onReady)
 
@@ -61,7 +61,7 @@ func Start() error {
 			// Send an embed to the channel where the error ocurred
 			embed := &discordgo.MessageEmbed{
 				Color:       0x1dd1a1,
-				Title:       "🔴 An error occurred while executing this command.",
+				Title:       "🔴 An error occurred while executing this command",
 				Description: fmt.Sprintf("```%s```\n You can report this error and get support for it on [Github](https://github.com/lukewhrit/kale/issues).", err.Error()),
 				Timestamp:   time.Now().Format(time.RFC3339),
 			}
@@ -83,6 +83,7 @@ func Start() error {
 	handler.RegisterCommand(&general.Invite{})
 	handler.RegisterCommand(&general.Stats{})
 	handler.RegisterCommand(&general.Uptime{})
+	handler.RegisterCommand(&general.ServerInfo{})
 
 	// Register commands from Fun group
 	handler.RegisterCommand(&fun.Bird{})
