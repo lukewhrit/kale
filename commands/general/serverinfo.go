@@ -152,7 +152,7 @@ func (c *ServerInfo) Exec(ctx shireikan.Context) error {
 			},
 			{
 				Name: "Channels",
-				Value: fmt.Sprintf("%d Text Channels, %d Voice Channels",
+				Value: fmt.Sprintf("%d Text Channels\n %d Voice Channels",
 					len(textChannelsCount), len(voiceChannelsCount)),
 				Inline: true,
 			},
