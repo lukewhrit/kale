@@ -12,65 +12,66 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
-type duckResponse struct {
+type dogResponse struct {
+	Status  string `json:"status"`
 	Message string `json:"message"`
-	URL     string `json:"url"`
 }
 
-// Duck gets a unique image of a duck and sends a embed with the image when
+// Dog gets a unique image of a dog and sends a embed with the image when
 // invoked.
-type Duck struct {
+type Dog struct {
 }
 
 // GetInvokes returns the command invokes.
-func (c *Duck) GetInvokes() []string {
-	return []string{"duck", "quack"}
+func (c *Dog) GetInvokes() []string {
+	return []string{"dog", "doggy", "puppy", "pup", "hound"}
 }
 
 // GetDescription returns the commands description.
-func (c *Duck) GetDescription() string {
-	return "get a unique image of a duck."
+func (c *Dog) GetDescription() string {
+	return "get a unique image of a dog."
 }
 
 // GetHelp returns the commands help text.
-func (c *Duck) GetHelp() string {
-	return "`-duck`"
+func (c *Dog) GetHelp() string {
+	return "`-dog`"
 }
 
 // GetGroup returns the commands group.
-func (c *Duck) GetGroup() string {
+func (c *Dog) GetGroup() string {
 	return shireikan.GroupFun
 }
 
 // GetDomainName returns the commands domain name.
-func (c *Duck) GetDomainName() string {
-	return "xyz.lwhr.kale.fun.duck"
+func (c *Dog) GetDomainName() string {
+	return "xyz.lwhr.kale.fun.dog"
 }
 
 // GetSubPermissionRules returns the commands sub
 // permissions array.
-func (c *Duck) GetSubPermissionRules() []shireikan.SubPermission {
+func (c *Dog) GetSubPermissionRules() []shireikan.SubPermission {
 	return nil
 }
 
 // IsExecutableInDMChannels returns whether
 // the command is executable in DM channels.
-func (c *Duck) IsExecutableInDMChannels() bool {
+func (c *Dog) IsExecutableInDMChannels() bool {
 	return true
 }
 
 // Exec is the commands execution handler.
-func (c *Duck) Exec(ctx shireikan.Context) error {
-	var duck duckResponse
+func (c *Dog) Exec(ctx shireikan.Context) error {
+	var dog dogResponse
 
 	client := &http.Client{
 		Timeout: 10 * time.Second,
 	}
 
-	resp, err := client.Get("https://random-d.uk/api/v2/random")
+	resp, err := client.Get("https://dog.ceo/api/breeds/image/random")
 
 	if err != nil {
 		return err
@@ -78,13 +79,13 @@ func (c *Duck) Exec(ctx shireikan.Context) error {
 
 	defer resp.Body.Close()
 
-	json.NewDecoder(resp.Body).Decode(&duck)
+	json.NewDecoder(resp.Body).Decode(&dog)
 
 	embed := &discordgo.MessageEmbed{
-		Color: 0x1dd1a1,
-		Title: "🦆 Quack!",
+		Color: domain.EmbedColor,
+		Title: "🐶 Woof",
 		Image: &discordgo.MessageEmbedImage{
-			URL: duck.URL,
+			URL: dog.Message,
 		},
 		Timestamp: time.Now().Format(time.RFC3339),
 	}

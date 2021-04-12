@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -87,7 +88,7 @@ func (c *Bunny) Exec(ctx shireikan.Context) error {
 	json.NewDecoder(resp.Body).Decode(&bunny)
 
 	embed := &discordgo.MessageEmbed{
-		Color: 0x1dd1a1,
+		Color: domain.EmbedColor,
 		Title: "🐇 Adorable little creatures",
 		Image: &discordgo.MessageEmbedImage{
 			URL: bunny.Media.Gif,

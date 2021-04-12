@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -66,7 +67,7 @@ func (c *Uptime) Exec(ctx shireikan.Context) error {
 	uptime := time.Since(startTime)
 
 	embed := &discordgo.MessageEmbed{
-		Color: 0x1dd1a1,
+		Color: domain.EmbedColor,
 		Title: "⌚ Kale Uptime",
 		Description: "Kale has been online for `" +
 			uptime.Truncate(time.Second).String() + "`.",

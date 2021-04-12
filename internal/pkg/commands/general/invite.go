@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -60,7 +61,7 @@ func (c *Invite) Exec(ctx shireikan.Context) error {
 	inviteLink := "https://discord.com/api/oauth2/authorize?client_id=763845128497922079&permissions=939904086&scope=bot"
 
 	embed := &discordgo.MessageEmbed{
-		Color: 0x1dd1a1,
+		Color: domain.EmbedColor,
 		Title: "🔗 Invite Kale",
 		Description: fmt.Sprintf(
 			"Want Kale in your server? [Just click this to invite me](%s).",

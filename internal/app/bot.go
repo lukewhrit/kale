@@ -15,8 +15,9 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/lukewhrit/kale/commands/fun"
-	"github.com/lukewhrit/kale/commands/general"
+	"github.com/lukewhrit/kale/internal/pkg/commands/fun"
+	"github.com/lukewhrit/kale/internal/pkg/commands/general"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -60,7 +61,7 @@ func Start() error {
 
 			// Send an embed to the channel where the error ocurred
 			embed := &discordgo.MessageEmbed{
-				Color:       0x1dd1a1,
+				Color:       domain.EmbedColor,
 				Title:       "🔴 An error occurred while executing this command",
 				Description: fmt.Sprintf("```%s```\n You can report this error and get support for it on [Github](https://github.com/lukewhrit/kale/issues).", err.Error()),
 				Timestamp:   time.Now().Format(time.RFC3339),

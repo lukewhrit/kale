@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 	"github.com/zekroTJA/shireikan"
 )
 
@@ -80,7 +81,7 @@ func (c *Cat) Exec(ctx shireikan.Context) error {
 	json.NewDecoder(resp.Body).Decode(&cat)
 
 	embed := &discordgo.MessageEmbed{
-		Color: 0x1dd1a1,
+		Color: domain.EmbedColor,
 		Title: "🐱 Meow",
 		Image: &discordgo.MessageEmbedImage{
 			URL: cat.File,
