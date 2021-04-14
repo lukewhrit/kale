@@ -9,13 +9,24 @@ package domain
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
 	// EmbedColor holds the global color of embeds
 	EmbedColor = 0x1dd1a1
 )
+
+// Logger is the Logrus instance
+var Logger = &logrus.Logger{
+	Out:       os.Stderr,
+	Formatter: new(logrus.TextFormatter),
+	Hooks:     make(logrus.LevelHooks),
+	Level:     logrus.InfoLevel,
+}
 
 // CodeifyString function encapsulates the `value` string in backticks to
 // indicate code blocks in Discord.

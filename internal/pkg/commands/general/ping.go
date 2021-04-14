@@ -7,89 +7,71 @@
 package general
 
 import (
+	"context"
 	"time"
 
-	"github.com/bwmarrin/discordgo"
+	"github.com/andersfylling/disgord"
+	"github.com/auttaja/gommand"
 	"github.com/lukewhrit/kale/internal/pkg/domain"
-	"github.com/zekroTJA/shireikan"
 )
 
 // Ping is a command responding with a "Ping" message in the execution channel.
 type Ping struct {
+	gommand.CommandBasics
 }
 
-// GetInvokes returns the command invokes.
-func (c *Ping) GetInvokes() []string {
-	return []string{"ping", "p"}
+func (p *Ping) Init() {
+	p.Name = "ping"
+	p.Aliases = []string{"pong", "p"}
+	p.Description = "Test Kale's connection to Discord by sending a ping."
 }
 
-// GetDescription returns the commands description.
-func (c *Ping) GetDescription() string {
-	return "test kale's connection to Discord by sending a ping."
-}
+func (p *Ping) CommandFunction(ctx *gommand.Context) error {
+	// timestamp, err := message.Timestamp.Parse()
 
-// GetHelp returns the commands help text.
-func (c *Ping) GetHelp() string {
-	return "`-ping`"
-}
-
-// GetGroup returns the commands group.
-func (c *Ping) GetGroup() string {
-	return shireikan.GroupGeneral
-}
-
-// GetDomainName returns the commands domain name.
-func (c *Ping) GetDomainName() string {
-	return "xyz.lwhr.kale.general.ping"
-}
-
-// GetSubPermissionRules returns the commands sub
-// permissions array.
-func (c *Ping) GetSubPermissionRules() []shireikan.SubPermission {
-	return nil
-}
-
-// IsExecutableInDMChannels returns whether
-// the command is executable in DM channels.
-func (c *Ping) IsExecutableInDMChannels() bool {
-	return true
-}
-
-// Exec is the commands execution handler.
-func (c *Ping) Exec(ctx shireikan.Context) error {
-	embed := &discordgo.MessageEmbed{
-		Color:     domain.EmbedColor,
-		Fields:    make([]*discordgo.MessageEmbedField, 0),
-		Title:     "🏓 Pinging...",
-		Timestamp: time.Now().Format(time.RFC3339),
+	embed := &disgord.Embed{
+		Color:  domain.EmbedColor,
+		Fields: make([]*disgord.EmbedField, 0),
+		Title:  "🏓 Pinging...",
+		Timestamp: disgord.Time{
+			Time: time.Now(),
+		},
 	}
 
-	message, err := ctx.GetSession().ChannelMessageSendEmbed(ctx.GetChannel().ID, embed)
+	_, err := ctx.Session.SendMsg(ctx.Message.ChannelID, embed)
 
 	if err != nil {
 		return err
 	}
 
-	timestamp, err := message.Timestamp.Parse()
+	timestamp, err := time.Parse(time.RFC3339, ctx.Message.Timestamp.String())
 
 	if err != nil {
 		return err
 	}
 
 	embed.Title = "🏓 Pong!"
-	embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
+	embed.Fields = append(embed.Fields, &disgord.EmbedField{
 		Name:   "Message Latency",
-		Value:  "`" + time.Since(timestamp).Truncate(time.Millisecond).String() + "`",
+		Value:  domain.CodeifyString(time.Since(timestamp).Truncate(time.Millisecond).String()),
 		Inline: true,
 	})
 
-	embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
+	heartbeatLatency, err := ctx.Session.AvgHeartbeatLatency()
+
+	if err != nil {
+		return err
+	}
+
+	embed.Fields = append(embed.Fields, &disgord.EmbedField{
 		Name:   "Heartbeat Latency",
-		Value:  "`" + ctx.GetSession().HeartbeatLatency().Truncate(time.Millisecond).String() + "`",
+		Value:  domain.CodeifyString(heartbeatLatency.Truncate(time.Millisecond).String()),
 		Inline: true,
 	})
 
-	_, err = ctx.GetSession().ChannelMessageEditEmbed(ctx.GetChannel().ID, message.ID, embed)
+	_, err = ctx.Message.Reply(context.Background(), ctx.Session, &disgord.CreateMessageParams{
+		Embed: embed,
+	})
 
 	return err
 }

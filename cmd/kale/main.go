@@ -7,26 +7,25 @@
 package main
 
 import (
-	"log"
-
 	"github.com/joho/godotenv"
 	"github.com/lukewhrit/kale/internal/app"
+	"github.com/lukewhrit/kale/internal/pkg/domain"
 )
 
 func init() {
 	// Load values in dotenv file to environment
 	if err := godotenv.Load(); err != nil {
-		log.Fatal(err)
+		domain.Logger.Error(err)
 	}
 
 	// Load environment variables into a golang struct
 	if err := app.LoadConfig(); err != nil {
-		log.Fatal(err)
+		domain.Logger.Error(err)
 	}
 }
 
 func main() {
 	if err := app.Start(); err != nil {
-		log.Fatal(err)
+		domain.Logger.Error(err)
 	}
 }
